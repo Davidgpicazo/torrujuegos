@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Torrujuegos</title>
+<meta name="description" content="Juegos educativos para niños de 3 a 10 años: colores, letras, sumas, lectura y misiones para moverse en casa.">
+<meta name="theme-color" content="#A6E6D4">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Torrujuegos">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- BIENVENIDA (primera vez en este dispositivo) -->
+  <section class="pantalla" id="pantallaBienvenida" hidden>
+    <div class="bienvenida">
+      <div class="marca"><img src="iconos/logo.svg" alt=""><h1 class="logo"><span class="t">Torru</span>juegos</h1></div>
+      <p class="subtitulo">Juegos para aprender jugando, de 3 a 10 años.</p>
+      <div class="opciones">
+        <button class="btn primario" id="btnCrearFamilia">👨‍👩‍👧 Es mi primera vez: crear familia</button>
+        <button class="btn" id="btnUnirseFamilia">🔑 Ya tengo un código de familia</button>
+      </div>
+      <p class="nota" id="notaBienvenida"></p>
+    </div>
+  </section>
+
+  <!-- INICIO: elegir niño -->
+  <section class="pantalla" id="pantallaInicio" hidden>
+    <div class="barra">
+      <div class="marca"><img src="iconos/logo.svg" alt="" style="width:48px"><h1 class="logo" style="font-size:2rem"><span class="t">Torru</span>juegos</h1></div>
+      <div class="espacio"></div>
+      <button class="btn pequeno" id="btnPadres">👨‍👩‍👧 Padres</button>
+    </div>
+    <div class="bannerInstalar" id="bannerInstalar" hidden>
+      <span class="txt">📲 <b>Instálalo en la pantalla de inicio</b> para que no se pierda el progreso. <span id="instruccionesInstalar"></span></span>
+      <button class="btn pequeno primario" id="btnInstalar" hidden>Instalar</button>
+      <button class="btn pequeno" id="btnCerrarBanner" aria-label="Cerrar aviso">✕</button>
+    </div>
+    <p class="subtitulo">¿Quién juega hoy?</p>
+    <div class="perfiles" id="perfiles"></div>
+  </section>
+
+  <!-- MENÚ DE JUEGOS -->
+  <section class="pantalla" id="pantallaMenu" hidden>
+    <div class="barra">
+      <button class="btn pequeno" id="btnCambiar">← Jugador</button>
+      <div class="espacio"></div>
+      <span class="chipTiempo" id="chipTiempo"></span>
+      <button class="btn pequeno" id="btnAlbum">Álbum</button>
+      <span class="chipEstrellas"><span class="e">★</span><span class="contEstrellas">0</span></span>
+    </div>
+    <h2 id="saludo" style="font-size:1.7rem"></h2>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section class="pantalla" id="pantallaJuego" hidden>
+    <div class="barra">
+      <button class="btn pequeno" id="btnSalir" aria-label="Volver al menú">←</button>
+      <h2 class="tituloJuego" id="tituloJuego"></h2>
+      <span class="chipNivel" id="nivelJuego"></span>
+      <div class="espacio"></div>
+      <span class="vidas" id="vidasJuego" aria-label="Vidas"></span>
+      <span class="chipEstrellas"><span class="e">★</span><span class="contEstrellas">0</span></span>
+    </div>
+    <div id="zonaJuego"></div>
+  </section>
+
+  <!-- ÁLBUM -->
+  <section class="pantalla" id="pantallaAlbum" hidden>
+    <div class="barra"><button class="btn pequeno" id="btnAlbumVolver">← Menú</button><div class="espacio"></div><span class="chipEstrellas"><span class="e">★</span><span class="contEstrellas">0</span></span></div>
+    <h2 style="font-size:1.7rem">Álbum de pegatinas</h2>
+    <div class="albumScroll">
+      <div><p class="nota" id="albumTexto" style="margin-bottom:6px"></p><div class="progreso"><div id="albumBarra"></div></div></div>
+      <div class="album" id="album"></div>
+      <h3 style="font-size:1.3rem">🏅 Pegatinas de misiones</h3>
+      <p class="nota">Solo se consiguen terminando un nivel de Misiones.</p>
+      <div class="album" id="albumEspecial"></div>
+    </div>
+  </section>
+
+  <!-- DESCANSO -->
+  <section class="pantalla" id="pantallaDescanso" hidden>
+    <div class="descanso">
+      <div class="luna" aria-hidden="true"></div>
+      <h2 id="descansoTitulo"></h2>
+      <p>Mañana hay más juegos. Ahora toca moverse: las misiones se juegan fuera de la pantalla.</p>
+      <button class="btn verde" id="btnDescansoMision">🤸 Ir a Misiones</button>
+      <button class="btn pequeno" id="btnDescansoJugador">Cambiar de jugador</button>
+      <button class="btn enlace" id="btnDescansoExtra">Soy adulto: dar más tiempo</button>
+    </div>
+  </section>
+</div>
+
+<!-- Candado de adulto -->
+<div class="panel" id="panelCandado" hidden>
+  <form class="panelIn" id="formCandado">
+    <h2>Solo para adultos</h2>
+    <p class="nota">Resuelve la operación para continuar.</p>
+    <div class="preguntaCandado" id="preguntaCandado"></div>
+    <input class="inputCandado" id="inputCandado" inputmode="numeric" autocomplete="off" aria-label="Respuesta">
+    <p class="nota" id="errorCandado" hidden>No es correcto. Prueba con esta otra.</p>
+    <div class="barra"><button type="button" class="btn pequeno" id="btnCandadoCancelar">Cancelar</button><div class="espacio"></div><button type="submit" class="btn primario">Entrar</button></div>
+  </form>
+</div>
+
+<!-- Más tiempo hoy -->
+<div class="panel" id="panelExtra" hidden>
+  <div class="panelIn">
+    <h2>¿Cuánto tiempo más?</h2>
+    <p class="nota" id="extraTexto"></p>
+    <div class="barra">
+      <button class="btn" data-min="5">+5 min</button><button class="btn primario" data-min="10">+10 min</button><button class="btn" data-min="15">+15 min</button>
+    </div>
+    <button class="btn pequeno" id="btnExtraCancelar">Cancelar</button>
+  </div>
+</div>
+
+<!-- Crear familia (alta de niños) -->
+<div class="panel" id="panelAlta" hidden>
+  <form class="panelIn ancho" id="formAlta">
+    <h2>Crear familia</h2>
+    <p class="nota">Añade a cada niño. Puedes usar un apodo. Con el mes y el año de nacimiento el juego calcula su edad y adapta los juegos solo.</p>
+    <div id="filasAlta" style="display:flex;flex-direction:column;gap:10px"></div>
+    <button type="button" class="btn pequeno" id="btnAltaOtro">＋ Añadir otro niño</button>
+    <label class="consentimiento" id="consentimientoAlta"><input type="checkbox" id="chkConsentimiento">
+      <span>Soy su padre, madre o tutor y acepto que estos datos se guarden para poder jugar en varios dispositivos. <a href="privacidad.html" target="_blank" rel="noopener">Ver privacidad</a>.</span></label>
+    <p class="nota" id="errorAlta" hidden></p>
+    <div class="barra"><button type="button" class="btn pequeno" id="btnAltaCancelar">Cancelar</button><div class="espacio"></div><button type="submit" class="btn primario" id="btnAltaCrear">Crear</button></div>
+  </form>
+</div>
+
+<!-- Unirse con código -->
+<div class="panel" id="panelUnirse" hidden>
+  <form class="panelIn" id="formUnirse">
+    <h2>Unirme a mi familia</h2>
+    <p class="nota">Escribe el código de familia. Lo encuentras en el otro dispositivo, en Padres → Familia.</p>
+    <input class="campoTexto campoCodigo" id="inputCodigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="TJ-XXXXX-XXXXX-XXXXX" aria-label="Código de familia">
+    <label class="consentimiento" id="unirLocal" hidden><input type="checkbox" id="chkUnirLocal"><span>Añadir también a la familia los niños que ya hay en este dispositivo.</span></label>
+    <p class="nota" id="errorUnirse" hidden></p>
+    <div class="barra"><button type="button" class="btn pequeno" id="btnUnirseCancelar">Cancelar</button><div class="espacio"></div><button type="submit" class="btn primario" id="btnUnirseEnviar">Unirme</button></div>
+  </form>
+</div>
+
+<!-- Código recién creado -->
+<div class="panel" id="panelCodigo" hidden>
+  <div class="panelIn">
+    <h2>Vuestro código de familia</h2>
+    <p class="nota">Escríbelo en cada móvil o tablet donde vayan a jugar. Guárdalo bien: quien lo tenga puede ver y cambiar el progreso de vuestros niños.</p>
+    <div class="codigoFamilia" id="textoCodigo"></div>
+    <div class="barra"><button class="btn pequeno" id="btnCopiarCodigo">📋 Copiar</button><div class="espacio"></div><button class="btn primario" id="btnCodigoListo">Entendido</button></div>
+  </div>
+</div>
+
+<!-- Panel de padres -->
+<div class="panel" id="panelPadres" hidden>
+  <div class="panelIn ancho">
+    <div class="barra"><h2>Panel de padres</h2><div class="espacio"></div><button class="btn pequeno" id="btnPadresCerrar">Cerrar</button></div>
+    <div class="pestanas">
+      <button class="pestana activa" data-tab="progreso">Progreso</button>
+      <button class="pestana" data-tab="ninos">Niños</button>
+      <button class="pestana" data-tab="familia">Familia</button>
+      <button class="pestana" data-tab="ajustes">Ajustes</button>
+    </div>
+    <div class="tabPanel" id="tabProgreso">
+      <div class="pestanas" id="selectorPerfil"></div>
+      <div id="contenidoProgreso" class="tabPanel"></div>
+    </div>
+    <div class="tabPanel" id="tabNinos" hidden>
+      <p class="nota">La edad se calcula con el mes y el año de nacimiento y adapta los juegos sola (también el día que cumplen años). Las misiones no gastan minutos.</p>
+      <div id="filasNinos" style="display:flex;flex-direction:column;gap:10px"></div>
+      <div class="barra"><button class="btn pequeno" id="btnNinoNuevo">＋ Añadir niño</button><div class="espacio"></div><button class="btn primario" id="btnGuardarNinos">Guardar</button></div>
+      <p class="nota" id="avisoNinos" hidden></p>
+    </div>
+    <div class="tabPanel" id="tabFamilia" hidden></div>
+    <div class="tabPanel" id="tabAjustes" hidden>
+      <label class="consentimiento"><input type="checkbox" id="chkSonido"> <span>Sonido y voz</span></label>
+      <div class="seccion"><h3>Copia de seguridad</h3>
+        <p class="nota">Descarga todo el progreso en un archivo para guardarlo o pasarlo a otro dispositivo sin código de familia.</p>
+        <div class="barra" style="margin-top:8px"><button class="btn pequeno" id="btnExportar">⬇️ Exportar</button><label class="btn pequeno">⬆️ Importar<input type="file" id="inputImportar" accept="application/json" hidden></label></div>
+        <p class="nota" id="avisoCopia" hidden></p></div>
+      <div class="seccion"><h3>Borrar progreso</h3><p class="nota">Pone a cero estrellas, pegatinas, niveles y habilidades de todos los niños. Los niños no se borran.</p>
+        <button class="btn pequeno peligro" id="btnBorrar" style="margin-top:8px">Borrar progreso</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="globo"></div>
+<canvas id="confeti"></canvas>
+
+<script src="js/config.js"></script>
+<script src="js/base.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/sync.js"></script>
+<script src="js/juegos/peluqueria.js"></script>
+<script src="js/juegos/bola.js"></script>
+<script src="js/juegos/frutas.js"></script>
+<script src="js/juegos/tuercas.js"></script>
+<script src="js/juegos/parejas.js"></script>
+<script src="js/juegos/misiones.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
