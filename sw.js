@@ -3,7 +3,7 @@
  * IMPORTANTE: cada vez que subas cambios, sube también el número de VERSION
  * para que los móviles descarguen la versión nueva.
  */
-const VERSION = 'torrujuegos-v1';
+const VERSION = 'torrujuegos-v2';
 const ARCHIVOS = [
   './', 'index.html', 'privacidad.html', 'manifest.webmanifest', 'css/estilos.css',
   'js/config.js', 'js/base.js', 'js/datos.js', 'js/sync.js', 'js/app.js',
